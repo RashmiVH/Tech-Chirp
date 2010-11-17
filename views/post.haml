@@ -1,0 +1,37 @@
+%h2 Post
+
+
+
+%p
+%form{ :method => "post" }
+  %table#Table2{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "775"}
+    %tr
+      %td
+        Title:
+    %tr
+      %td
+        %input{:name => "title_name", :value => @title_name, :size => "35", :type => "text"}/
+  
+    %tr
+      %td  
+    %tr
+      %td
+        Description
+    %tr
+      %td
+        %textarea#description{:cols => "45", :name => "description", :rows => "8"}
+    %tr
+      %td
+    %tr
+      %td
+        %input{:name => "Java", :value => "java", :type => "checkbox"}Java
+        %input{:name => "Python", :value => "py", :type => "checkbox"}Python
+        %input{:name => "Asp", :value => "asp", :type => "checkbox"}ASP
+        %input{:name => "Ruby", :value => "ruby", :type => "checkbox"}Ruby
+
+    %tr
+      %td  
+    %tr
+      %td
+        \ 
+        %input#submit{:name => "submit", :onclick => "", :type => "submit", :value => " Submit "}/

@@ -1,0 +1,15 @@
+!!!
+%html{ :xmlns=>"http://www.w3.org/1999/xhtml" }
+  %head
+    %title=@title
+    == <meta name="Description" content="#{@description||$description}" />
+    == <meta name="Keywords" content="#{@keywords||$keywords}" />
+  %body{:background => "images/image1.jpg"} 
+    %h1 #{@title}
+    %ul
+      %li
+        %a{ :href => "/" } Home
+      %li
+        %a{ :href => "/post" } Post
+      
+    =yield
