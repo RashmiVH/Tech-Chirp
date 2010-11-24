@@ -6,7 +6,7 @@ require 'haml'
 #configure :production do
 #    require 'newrelic_rpm'
 #end
-
+enable :sessions
 $description = 'Website description' 
 $keywords = 'Keywords'
 
@@ -20,11 +20,31 @@ end
 post '/' do
 	@username = params["user"]
 	@password = params["pass"]
-	haml :home
+	db = Mongo::Connection.new.db("mydb")
+	coll = db.collection("User")
+	my_doc = coll.find_one("username"=>@username, "password"=>@password)
+	
+	if my_doc then
+	
+		@user=my_doc.values_at("username")
+		@pass=my_doc.values_at("password")
+		@id = my_doc.values_at("_id")
+		session[:message] = @id
+		redirect '/home'
+
+	else
+		haml :login
+	end
+	
+end
+
+get '/home/?' do
+	puts "TARUN ROCKS"
 end
 
 
 get '/post/?' do
+  puts "SESSION ID= #{session[:message]}"
   @title = 'Post'
   haml :post
 end
@@ -65,22 +85,10 @@ end
 #puts @cat
 
 db = Mongo::Connection.new.db("mydb")
-#db = Mongo::Connection.new("localhost").db("mydb")
-#db = Mongo::Connection.new("127.0.0.1", 27017).db("mydb")
 coll = db.collection("post")
-#coll = db["testCollection"]
 doc = {"title" => @title_name, "description" => @description , "categories" => @cat}
 coll.insert(doc)
- #coll.find().each { |row| puts row.inspect }
-#puts @title_name
-
- # @post_form = PostForm.new(params[:post_form])
- # if @post_form.valid?
- #   @post_form.clear
-    haml :thanks
-#  else
-#    haml :post
-#  end
+haml :thanks
 end
 
 
