@@ -3,7 +3,6 @@ require 'mongo'
 require 'sinatra'
 require 'haml'
 
-
 #configure :production do
 #    require 'newrelic_rpm'
 #end
@@ -12,15 +11,37 @@ $description = 'Website description'
 $keywords = 'Keywords'
 
 get '/?' do
-	@title = 'Welcome to Tech-Chirp'
+	@title = 'Welcome to JobTech Tweet'
 	@description = 'Welcome to the Website babes'
 	@keywords = 'More Keywords'
+	haml :login
+end
+
+post '/' do
+	@username = params["user"]
+	@password = params["pass"]
 	haml :home
 end
+
 
 get '/post/?' do
   @title = 'Post'
   haml :post
+end
+
+get '/register/?' do
+  @title = 'Post'
+  haml :register
+end
+
+post '/register/?' do
+@fullname = params["fullname"]
+@email = params["email"]
+@username = params["user"]
+@password = params["pass"]
+
+puts @email
+haml :home
 end
 
 post '/post/?' do

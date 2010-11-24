@@ -4,12 +4,18 @@
     %title=@title
     == <meta name="Description" content="#{@description||$description}" />
     == <meta name="Keywords" content="#{@keywords||$keywords}" />
-  %body{:background => "images/image1.jpg"} 
+    %style{ :type => "text/css" }
+      
+  %body 
+    %font{:color => "#FFFFFF"}
     %h1 #{@title}
     %ul
       %li
         %a{ :href => "/" } Home
       %li
         %a{ :href => "/post" } Post
+      %li
+        %a{ :href => "/register" } Register
+
       
     =yield

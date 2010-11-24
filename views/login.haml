@@ -1,0 +1,9 @@
+%h1 LOGIN
+%form{:method => "post"}
+  name:
+  %INPUT{:NAME => "user", :TYPE => "TEXT"}
+    %BR
+      password:
+      %INPUT{:NAME => "pass", :TYPE => "PASSWORD"}
+        %P
+          %INPUT{:TYPE => "SUBMIT", :VALUE => "submit"}
