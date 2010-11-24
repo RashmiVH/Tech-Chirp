@@ -39,8 +39,11 @@ post '/register/?' do
 @email = params["email"]
 @username = params["user"]
 @password = params["pass"]
-
-puts @email
+db = Mongo::Connection.new.db("mydb")
+coll = db.collection("User")
+doc = {"fullname" => @fullname, "email" => @email , "username" => @username , "password" => @password}
+coll.insert(doc)
+#puts @email
 haml :home
 end
 
@@ -52,28 +55,23 @@ post '/post/?' do
 @categories[1] = params["Python"]
 @categories[2] = params["Asp"]
 @categories[3] = params["Ruby"]
-
-
-
 for i in 0..3
-
 if @categories[i] then
 @cat = @categories[i]
 break
 end
-
 end
 
-puts @cat
+#puts @cat
 
 db = Mongo::Connection.new.db("mydb")
 #db = Mongo::Connection.new("localhost").db("mydb")
 #db = Mongo::Connection.new("127.0.0.1", 27017).db("mydb")
-coll = db.collection("mydb")
+coll = db.collection("post")
 #coll = db["testCollection"]
 doc = {"title" => @title_name, "description" => @description , "categories" => @cat}
 coll.insert(doc)
- coll.find().each { |row| puts row.inspect }
+ #coll.find().each { |row| puts row.inspect }
 #puts @title_name
 
  # @post_form = PostForm.new(params[:post_form])
