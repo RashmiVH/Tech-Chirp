@@ -25,7 +25,7 @@ post '/' do
 	my_doc = coll.find_one("username"=>@username, "password"=>@password)
 	
 	if my_doc then
-	
+		
 		@user=my_doc.values_at("username")
 		@pass=my_doc.values_at("password")
 		@id = my_doc.values_at("_id")
@@ -39,12 +39,12 @@ post '/' do
 end
 
 get '/home/?' do
-	puts "TARUN ROCKS"
+	@user_id = session[:message]
+	haml :home
 end
 
 
 get '/post/?' do
-  puts "SESSION ID= #{session[:message]}"
   @title = 'Post'
   haml :post
 end
@@ -68,6 +68,9 @@ haml :home
 end
 
 post '/post/?' do
+
+@user_id = session[:message]
+puts "session in post #{@user_id}"
 @title_name = params["title_name"]
 @description = params["description"]
 @categories = Array.new(4)
@@ -75,20 +78,37 @@ post '/post/?' do
 @categories[1] = params["Python"]
 @categories[2] = params["Asp"]
 @categories[3] = params["Ruby"]
+ j=0
+@cat=Array.new()
 for i in 0..3
 if @categories[i] then
-@cat = @categories[i]
-break
-end
+@cat[j] = @categories[i]
+j=j+1
 end
 
-#puts @cat
+end
 
 db = Mongo::Connection.new.db("mydb")
 coll = db.collection("post")
-doc = {"title" => @title_name, "description" => @description , "categories" => @cat}
+doc = {"userid"=>@user_id,"title" => @title_name, "description" => @description , "categories" => @cat}
 coll.insert(doc)
 haml :thanks
 end
+
+
+__END__
+
+@@ home
+-db = Mongo::Connection.new.db("mydb")
+-coll = db.collection("post")
+%ul
+  %li
+    %a{ :href => "/post" } Post	
+-coll.find().each  do |cursor| 
+  %div 
+    %h3 Title: #{cursor.values_at("title")}
+  %div Post: #{cursor.values_at("description")}
+   
+
 
 
